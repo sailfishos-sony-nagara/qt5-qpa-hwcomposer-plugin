@@ -287,6 +287,13 @@ HwComposerBackend_v20::HwComposerBackend_v20(hw_module_t *hwc_module, void *libm
     }
     HWC_PLUGIN_ASSERT_NOT_NULL(hwc2_primary_display);
 
+    // set color mode if requested
+    if (qEnvironmentVariableIsSet("QPA_HWC_COLOR_MODE")) {
+        int colorMode = qgetenv("QPA_HWC_COLOR_MODE").toInt();
+        int renderIntent = qgetenv("QPA_HWC_RENDER_INTENT").toInt();
+        auto error = hwc2_compat_display_set_color_mode(hwc2_primary_display, colorMode, renderIntent);
+    }
+
     sleepDisplay(false);
 }
 
